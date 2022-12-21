@@ -9,6 +9,7 @@ import ProductPage from "./Pages/ProductPage/ProductPage"
 import ProfilePage from "./Pages/Profile/ProfilePage"
 import SearchResult from "./Pages/SearchResult/SearchResult"
 import Signin from "./Pages/Signin/Signin"
+import PdfReader from "./Pages/PdfReader/pdfReader"
 import { useEffect, useState } from "react"
 import ConfirmPage from "./Pages/ConfirmPage/ConfirmPage"
 import { BASE_API, HEROKU_API } from "./Services/Constants"
@@ -115,6 +116,7 @@ const App = () => {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/dang-van-chuyen" element={<DangVanChuyen />} />
             <Route path="/signin" element={<Signin _setUserInfo={_setUserInfo} />} />
+            <Route path="/pdfreader" element={<PdfReader />} />
             <Route path="/confirm" element={<ConfirmPage />} />
             <Route path="/forget-password/:step" element={<ForgetPassword />} />
 

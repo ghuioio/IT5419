@@ -211,6 +211,10 @@ const Navbar = (props) => {
     navigate('/signin', { state: { prev: window.location.pathname } })
   }
 
+  const pdfReader = (event) => {
+    navigate('/pdfReader', { state: { prev: window.location.pathname } })
+  }
+
   const [cateIdV2, setCateIdV2] = useState('')
 
   const [badgeContent, setBadgeContent] = useState(0)
@@ -280,8 +284,16 @@ const Navbar = (props) => {
                   style={{ display: (anchor[0] === 'menu-sach') ? 'block' : 'none' }}
                 />
               </div>
-
+                
+              <div 
+                className={classes.menuBox}
+                onClick={pdfReader}>
+                <Typography variant="body1" 
+                    style={{fontWeight: 'bold'}}
+                    component='div'>Đọc thử</Typography>
+              </div>
             </div>
+
             <div className={classes.searchZone}>
               <TextField
                 size='small'
@@ -300,6 +312,8 @@ const Navbar = (props) => {
               <IconButton className={classes.searchIcon} onClick={search}>
                 <Search></Search>
               </IconButton>
+                
+
 
               <Box className={classes.tabBox}>
                 <NavLink to='/cart'>

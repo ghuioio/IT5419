@@ -44,7 +44,7 @@ const Footer = ({ signedIn }) => {
               <Box display='flex' alignItems='center'>
                 <Email style={{ color: '#949380' }} />
                 <Box marginLeft={2} />
-                <TypoNormal>sonhero981@gmail.com</TypoNormal>
+                <TypoNormal>book&chill@gmail.com</TypoNormal>
               </Box>
             </Box>
             <Box minWidth='150px'>
@@ -78,7 +78,7 @@ const Footer = ({ signedIn }) => {
           <Divider flexItem style={{ backgroundColor: '#949380', height: '1px', width: '100%' }} />
           <Box marginTop={4} />
           <Box width='100%'>
-            <TypoNormal>Copyright 2021 @Hung Son</TypoNormal>
+            <TypoNormal>Copyright 2022@book&chill</TypoNormal>
           </Box>
         </Box>
 
