@@ -4,10 +4,10 @@ import { Viewer } from '@react-pdf-viewer/core';
 import PDFViewer from 'pdf-viewer-reactjs'
 import '@react-pdf-viewer/core/lib/styles/index.css';
 
-const PdfReader = () => {
-  // const [url, setUrl] = React.useState('https://arxiv.org/pdf/2212.05129.pdf')
-  const [url, setUrl] = React.useState('')
-
+const PdfReader = (props) => {
+  const [url, setUrl] = React.useState('https://arxiv.org/pdf/2212.05129.pdf')
+  // const [url, setUrl] = React.useState(props.link)
+  console.log(props);
   const onChange = (e) => {
       const files = e.target.files;
       files.length > 0 && setUrl(URL.createObjectURL(files[0]));
@@ -29,7 +29,7 @@ const PdfReader = () => {
       >
       </Box>
           <div style={{display: 'flex', justifyContent:'center', margin:'10px'}}> 
-            <input type="file" accept=".pdf" onChange={onChange} />
+            {/* <input type="file" accept=".pdf" onChange={onChange} /> */}
           </div>
           {/* <div>
               <PDFViewer

@@ -212,7 +212,7 @@ const Navbar = (props) => {
   }
 
   const pdfReader = (event) => {
-    navigate('/pdfReader', { state: { prev: window.location.pathname } })
+    navigate('/pdf-page', { state: { prev: window.location.pathname } })
   }
 
   const [cateIdV2, setCateIdV2] = useState('')

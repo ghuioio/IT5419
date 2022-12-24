@@ -106,7 +106,7 @@ const ProductPage = (props) => {
     const sameBooks = await getSameBook(data.category)
     await getComments(id)
     let filtered_books = sameBooks.filter(book => book._id !== data._id)
-    let lineRow = new LineRow('Sách cùng thể loại', `/book-page/${data.category}`)
+    let lineRow = new LineRow('Sản phẩm liên quan', `/book-page/${data.category}`)
     filtered_books.map(book => {
       let lineItem = new LineItem(
         null,
