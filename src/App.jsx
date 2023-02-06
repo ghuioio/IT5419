@@ -118,7 +118,7 @@ const App = () => {
             <Route path="/dang-van-chuyen" element={<DangVanChuyen />} />
             <Route path="/signin" element={<Signin _setUserInfo={_setUserInfo} />} />
             <Route path="/pdf-page" element={<PdfPage />} />
-            <Route path="/pdfreader" element={<PdfReader />}  />
+            <Route path="/pdfreader/:id" element={<PdfReader />}  />
             <Route path="/confirm" element={<ConfirmPage />} />
             <Route path="/forget-password/:step" element={<ForgetPassword />} />
 

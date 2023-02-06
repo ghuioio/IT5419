@@ -1,74 +1,114 @@
+import { useState } from 'react'
 import { Box, Divider} from "@material-ui/core"
-import * as React from 'react';
+import { Worker } from '@react-pdf-viewer/core';
 import { Viewer } from '@react-pdf-viewer/core';
-import PDFViewer from 'pdf-viewer-reactjs'
 import '@react-pdf-viewer/core/lib/styles/index.css';
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
-const PdfReader = (props) => {
-  const [url, setUrl] = React.useState('https://arxiv.org/pdf/2212.05129.pdf')
-  // const [url, setUrl] = React.useState(props.link)
-  console.log(props);
-  const onChange = (e) => {
-      const files = e.target.files;
-      files.length > 0 && setUrl(URL.createObjectURL(files[0]));
-  };
-  return (
-    <Box
-      width='100%'
-      height='100%'
-      style={{
-        backgroundColor: '#F4F3EC'
-      }}
-      boxSizing='border-box'
-      paddingTop={8}
-    >
-      <Box
-        marginTop={8}
-        display='flex'
-        justifyContent='space-evenly'
-      >
-      </Box>
-          <div style={{display: 'flex', justifyContent:'center', margin:'10px'}}> 
-            {/* <input type="file" accept=".pdf" onChange={onChange} /> */}
-          </div>
-          {/* <div>
-              <PDFViewer
-                document={{
-                    url: url,
-                }}
-            />
-          </div> */}
-          <div style={{display: 'flex', justifyContent:'center'}}>
-            <div className="mt-4" style={{ height: '600px', width:'70%'}}>
-                {url ? (
-                    <div
-                        style={{
-                            border: '1px solid rgba(0, 0, 0, 0.3)',
-                            height: '100%',
-                        }}
-                    >
-                        <Viewer fileUrl={url} />
-                    </div>
-                ) : (
-                    <div
-                        style={{
-                            alignItems: 'center',
-                            border: '2px dashed rgba(0, 0, 0, .3)',
-                            display: 'flex',
-                            fontSize: '2rem',
-                            height: '100%',
-                            justifyContent: 'center',
-                            width: '100%',
-                        }}
-                    >
-                        Preview area
-                    </div>
+function App() {
+
+    // creating new plugin instance
+    const defaultLayoutPluginInstance = defaultLayoutPlugin();
+
+    // pdf file onChange state
+    const [pdfFile, setPdfFile] = useState('https://github.com/ghuioio/IT5419/blob/main/Top%2050%20Machine%20Learning%20Interview%20Questions.pdf');
+
+    // pdf file error state
+    const [pdfError, setPdfError] = useState('');
+
+    const [isNotChosen, setIsNotChosen] = useState(true)
+
+
+    // handle file onChange event
+    const allowedFiles = ['application/pdf'];
+    const handleFile = (e) => {
+        let selectedFile = e.target.files[0];
+        if (selectedFile) {
+            if (selectedFile && allowedFiles.includes(selectedFile.type)) {
+                let reader = new FileReader();
+                reader.readAsDataURL(selectedFile);
+                reader.onloadend = (e) => {
+                    setPdfError('');
+                    setPdfFile(e.target.result);
+                }
+                const files = e.target.files
+                const formData = new FormData()
+                formData.append('pdf', 'test.pdf')
+                console.log(formData);
+                fetch('http://127.0.0.1:5000/pdf_to_text', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => console.log(response))
+                .then(data => {
+                    console.log(data)
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+            }
+            else {
+                setPdfError('Not a valid pdf: Please select only PDF');
+                setPdfFile('');
+            }
+            // setIsNotChosen(false);
+        }
+        else {
+            console.log('please select a PDF');
+        }
+    }
+
+    return (
+        <Box
+            width='100%'
+            height='100%'
+            style={{
+                backgroundColor: '#F4F3EC'
+            }}
+            boxSizing='border-box'
+            paddingTop={8}
+            >
+
+            <form>
+
+                <label><h5>Upload PDF</h5></label>
+                <br></br>
+
+                {isNotChosen && (<input type='file' className="form-control"
+                    onChange={handleFile}></input>)}
+
+                {/* we will display error message in case user select some file
+        other than pdf */}
+                {pdfError && <span className='text-danger'>{pdfError}</span>}
+
+            </form>
+
+            {/* <h5>View PDF</h5> */}
+            <div className="viewer"
+                style={{ height: 1200 }}>
+
+                {/* render this if we have a pdf file */}
+                {pdfFile && (
+                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.16.105/build/pdf.worker.min.js">
+                        <Viewer
+                            fileUrl={pdfFile}
+                            initialPage={0}
+                            plugins={[defaultLayoutPluginInstance]}>
+                        </Viewer>
+                    </Worker>
                 )}
+
+                {/* render this if we have pdfFile state null   */}
+                {!pdfFile && <>No file is selected yet</>}
+
             </div>
-          </div>
-      <Box marginTop={10}/>
-    </Box>
-  )
+            <Box marginTop={10}/>
+        </Box>
+    );
 }
 
-export default PdfReader
+export default App;
+
+
+// import file from "./files/pdf/hossain2018.pdf";

@@ -7,6 +7,8 @@ import MenuSach from "./Navbar_Menu/MenuSach"
 import CategoryBar from "./Navbar_Menu/CategoryBar"
 import { Link, NavLink, useNavigate } from "react-router-dom"
 import './Navbar.css'
+import axios from "axios";
+import { PDF_API, VOICE_API } from "../../Services/Constants"
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -174,6 +176,7 @@ const Navbar = (props) => {
   const [openSearch, setOpenSearch] = useState(false)
   const [expanded, setExpanded] = useState(false);
   const [anchor, setAnchor] = useState([null, null])
+  const [pdfFile, setPdfFile] = useState(null)
   const classes = useStyles({ openSearch, expanded })
 
   const handleExpandClick = (menu_name) => (event) => {
@@ -213,6 +216,38 @@ const Navbar = (props) => {
 
   const pdfReader = (event) => {
     navigate('/pdf-page', { state: { prev: window.location.pathname } })
+  }
+
+  const pdfToSpeech = async() => {
+    const formData = new FormData();
+    if (!pdfFile) return;
+    formData.append("pdf", pdfFile);
+    formData.append("pdfName", pdfFile.name)
+    try {
+      const response = await axios({
+        method: "post",
+        url: `${PDF_API}/pdf_to_speech`,
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data"},
+      });
+      console.log(response.data)
+      if (!response.data.success) return;
+      // encodeURIComponent
+      window.open(response.data.link , '_blank', 'noopener,noreferrer');
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+  const handleFileSelect = async (event) => {
+    setPdfFile(event.target.files[0])
+  } 
+
+  const sendData = async (event) => {
+    event.preventDefault()
+    console.log("Sending to API!")
+    console.log(pdfFile)
+    pdfToSpeech();
   }
 
   const [cateIdV2, setCateIdV2] = useState('')
@@ -292,6 +327,27 @@ const Navbar = (props) => {
                     style={{fontWeight: 'bold'}}
                     component='div'>Đọc thử</Typography>
               </div>
+
+              <div 
+                className={classes.menuBox}>
+                <label>
+                  <input name="" type="file" id="formId" hidden onChange={handleFileSelect} ></input>
+                  <Typography variant="body1" 
+                    style={{fontWeight: 'bold'}}
+                    component='div'>PDF</Typography>
+                </label>
+              </div>
+
+              <div 
+                className={classes.menuBox}>
+                  
+                  <Button onClick={sendData}>
+                  <Typography variant="body1" 
+                    style={{fontWeight: 'bold'}}
+                    component='div'>CONVERT</Typography>
+                  </Button>
+              </div>
+
             </div>
 
             <div className={classes.searchZone}>

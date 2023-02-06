@@ -54,7 +54,7 @@ const Book2 = (props) => {
 
   return (
     <Card className={classes.root} elevation={props.elevation}>
-      <Link to={`/pdfreader`}>
+      <Link to={`/pdfreader/${props.link}`}>
         {/* <PdfReader link={props.link}/> */}
         <CardActionArea className={classes.cardActionArea}>
           <CardMedia

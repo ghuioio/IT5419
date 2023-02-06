@@ -53,12 +53,12 @@ const PdfPage = () => {
 
       let lineResult = []
       
-      let pdfLineRow = new LineRow('PDF', `/pdfReader`)
+      let pdfLineRow = new LineRow('PDF', `/pdf-page/`)
       pdf_data.map(pdf =>{
         let pdfLineItem = new LineItem(
             null,
             pdf.imageLink,
-            pdf.link,
+            pdf.id,
             10000,
             null,
             null,
